@@ -10,6 +10,8 @@ find / -name docker-compose
 ln -s /usr/local/python37/bin/docker-compose /usr/bin/docker-compose
 ```
 
+
+
 --------
 
 ## 二.配置docker-compose.yml,FasterRunner和FasterWeb
@@ -57,7 +59,7 @@ services:
       - /root/workspace/FasterRunner:/share/fasterunner
       ports:
       - 8000:8000
-      command: /bin/sh -c '\cp -rf /share/fasterunner/* /usr/src/app/ && python manage.py runserver 0.0.0.0:8000'
+      command: /bin/sh -c '\cp -rf /share/fasterunner/* /usr/src/app/ && python3 manage.py runserver 0.0.0.0:8000'
    
   fasterweb:
       build: /root/workspace/FasterWeb

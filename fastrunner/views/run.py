@@ -228,7 +228,7 @@ def run_suite_tree(request):
             # [[{scripts}, {scripts}], [{scripts}, {scripts}]]
             config_list.append(parse_host(host, config))
             test_sets.append(testcase_list)
-            suite_list = suite_list + suite
+        suite_list = suite_list + suite
 
     if back_async:
         tasks.async_debug_suite.delay(test_sets, project, suite_list, report, config_list)

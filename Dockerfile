@@ -31,6 +31,7 @@ RUN  pip3 install -r ./requirements.txt -i \
     ln -s /opt/workspace/FasterRunner/nginx.conf /etc/nginx/sites-enabled/
 
 EXPOSE 5000
+EXPOSE 22
 
 CMD bash ./start.sh
 
