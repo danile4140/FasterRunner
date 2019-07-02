@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'FasterRunner.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'FastRunner',
+        'NAME': 'FasterRunner',
         'USER': 'root',
         'PASSWORD': '123456',
         'HOST': 'db',
