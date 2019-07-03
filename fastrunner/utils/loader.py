@@ -190,7 +190,7 @@ def load_debugtalk(project):
     return debugtalk
 
 
-def debug_suite(suite, project, obj, config, save=True):
+def debug_suite(suite, project, obj, config, save=True, type=1):
     """debug suite
            suite :list
            pk: int
@@ -214,12 +214,12 @@ def debug_suite(suite, project, obj, config, save=True):
     runner.run(test_sets)
     summary = parse_summary(runner.summary)
     if save:
-        save_summary("", summary, project, type=1)
+        save_summary("", summary, project, type=type)
 
     return summary
 
 
-def debug_api(api, project, name=None, config=None, save=True):
+def debug_api(api, project, name=None, config=None, save=True, type=1):
     """debug api
         api :dict or list
         project: int
@@ -245,7 +245,7 @@ def debug_api(api, project, name=None, config=None, save=True):
 
     summary = parse_summary(runner.summary)
     if save:
-        save_summary("", summary, project, type=1)
+        save_summary("", summary, project, type=type)
 
     return summary
 
@@ -320,4 +320,37 @@ def save_summary(name, summary, project, type=2):
         "name": name,
         "type": type,
         "summary": json.dumps(summary, ensure_ascii=False),
+    })
+
+    if type == 4:
+        save_data(summary, project, type)
+
+
+def save_data(summary, project, type):
+    """保存接口执行数据"""
+    case_pass_num, case_fail_num, case_skip_num = 0, 0, 0
+    for case in summary["details"]:
+        if case["success"]:
+            case_pass_num += 1
+        else:
+            case_fail_num += 1
+    case_num = len(summary["details"])
+    api_pass_num = summary["stat"]["testsRun"]
+    api_fail_num = summary["stat"]["failures"]
+    api_error_num = summary["stat"]["errors"]
+    elapsed_time = summary["time"]["duration"]
+    start_time = summary["time"]["start_at"]
+
+    models.DataCollection.objects.create(**{
+        "case_num": case_num,
+        "case_pass_num": case_pass_num,
+        "case_fail_num": case_fail_num,
+        "case_skip_num": case_skip_num,
+        "api_pass_num": api_pass_num,
+        "api_fail_num": api_fail_num,
+        "api_error_num": api_error_num,
+        "elapsed_time": elapsed_time,
+        "start_time": start_time,
+        "project": project,
+        "type": type
     })

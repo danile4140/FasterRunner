@@ -15,11 +15,11 @@ def async_debug_api(api, project, name, config=None):
 
 
 @shared_task
-def async_debug_suite(suite, project, obj, report, config):
+def async_debug_suite(suite, project, obj, report, config, type=1):
     """异步执行suite
     """
-    summary = debug_suite(suite, project, obj, config=config, save=False)
-    save_summary(report, summary, project)
+    summary = debug_suite(suite, project, obj, config=config, save=False, type=type)
+    save_summary(report, summary, project, type=type)
 
 
 

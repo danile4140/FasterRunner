@@ -25,7 +25,7 @@ WORKDIR /opt/workspace/FasterRunner/
 
 COPY . .
 
-RUN  pip3 install -r ./requirements.txt -i \
+RUN pip3 install -r ./requirements.txt -i \
     https://pypi.tuna.tsinghua.edu.cn/simple \
     --default-timeout=100 && \
     ln -s /opt/workspace/FasterRunner/nginx.conf /etc/nginx/sites-enabled/

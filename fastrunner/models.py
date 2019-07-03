@@ -129,7 +129,6 @@ class Variables(BaseTable):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
 
-
 class Report(BaseTable):
     """
     报告存储
@@ -137,7 +136,8 @@ class Report(BaseTable):
     report_type = (
         (1, "调试"),
         (2, "异步"),
-        (3, "定时")
+        (3, "定时"),
+        (4, "auto")
     )
 
     class Meta:
@@ -148,6 +148,26 @@ class Report(BaseTable):
     type = models.IntegerField("报告类型", choices=report_type)
     summary = models.TextField("主体信息", null=False)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+
+class DataCollection(models.Model):
+    """数据采集"""
+
+    class Meta:
+        verbose_name = "数据采集"
+        db_table = "DataCollection"
+
+    case_num = models.IntegerField("用例总数", null=False, default=0)
+    case_pass_num = models.IntegerField("通过用例数", null=False, default=0)
+    case_fail_num = models.IntegerField("失败用例数", null=False, default=0)
+    case_skip_num = models.IntegerField("跳过用例数", null=False, default=0)
+    api_pass_num = models.IntegerField("通过api数", null=False, default=0)
+    api_fail_num = models.IntegerField("失败api数", null=False, default=0)
+    api_error_num = models.IntegerField("异常api数", null=False, default=0)
+    elapsed_time = models.FloatField("运行耗时", null=False, default=0)
+    start_time = models.FloatField('创建时间', null=False)
+    type = models.IntegerField("执行类型", null=False)
+    project = models.IntegerField("项目id", null=False)
 
 
 class Relation(models.Model):
@@ -162,6 +182,7 @@ class Relation(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     tree = models.TextField("结构主题", null=False, default=[])
     type = models.IntegerField("树类型", default=1)
+
 
 [
     {

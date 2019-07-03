@@ -203,6 +203,7 @@ def run_suite_tree(request):
     back_async = request.data["async"]
     report = request.data["name"]
     host = request.data["host"]
+    type = request.data.get("type") if request.data.get("type") is not None else 1
 
     if host != "请选择":
         host = models.HostIP.objects.get(name=host, project=project).value.splitlines()
@@ -231,11 +232,11 @@ def run_suite_tree(request):
         suite_list = suite_list + suite
 
     if back_async:
-        tasks.async_debug_suite.delay(test_sets, project, suite_list, report, config_list)
+        tasks.async_debug_suite.delay(test_sets, project, suite_list, report, config_list, type=type)
         summary = loader.TEST_NOT_EXISTS
         summary["msg"] = "用例运行中，请稍后查看报告"
     else:
-        summary = loader.debug_suite(test_sets, project, suite_list, config_list)
+        summary = loader.debug_suite(test_sets, project, suite_list, config_list, type=type)
 
     return Response(summary)
 
